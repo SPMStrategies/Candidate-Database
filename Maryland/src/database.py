@@ -51,9 +51,15 @@ class SupabaseClient:
             notes=f"Automated update for {datetime.now().date()}"
         )
         
-        result = self.client.table('ingest_runs').insert(
-            ingest_run.dict(exclude={'id'})
-        ).execute()
+        # Convert to dict and handle datetime serialization
+        ingest_data = ingest_run.dict(exclude={'id'})
+        # Convert datetime to ISO string for JSON serialization
+        if 'started_at' in ingest_data and ingest_data['started_at']:
+            ingest_data['started_at'] = ingest_data['started_at'].isoformat()
+        if 'finished_at' in ingest_data and ingest_data['finished_at']:
+            ingest_data['finished_at'] = ingest_data['finished_at'].isoformat()
+        
+        result = self.client.table('ingest_runs').insert(ingest_data).execute()
         
         self.ingest_run_id = UUID(result.data[0]['id'])
         logger.info(f"Created ingest run: {self.ingest_run_id}")
@@ -228,9 +234,15 @@ class SupabaseClient:
         filing_info = candidate_data.get('filing_info', {})
         if any(filing_info.values()):
             filing_record = {
-                'candidate_id': str(candidate_id),
-                **{k: v for k, v in filing_info.items() if v is not None}
+                'candidate_id': str(candidate_id)
             }
+            for k, v in filing_info.items():
+                if v is not None:
+                    # Convert datetime to ISO string if needed
+                    if k == 'filing_date' and hasattr(v, 'isoformat'):
+                        filing_record[k] = v.isoformat()
+                    else:
+                        filing_record[k] = v
             self.client.table('candidate_filing_info').insert(filing_record).execute()
         
         # Track source
