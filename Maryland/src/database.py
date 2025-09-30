@@ -44,6 +44,7 @@ class SupabaseClient:
         
         ingest_run = IngestRun(
             source=SOURCE_NAME,
+            run_key=f"maryland_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             endpoint_or_file="Maryland BOE CSVs",
             row_count_raw=total_raw,
             actor="github_action",
