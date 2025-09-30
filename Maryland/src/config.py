@@ -47,7 +47,7 @@ LOG_LEVEL = os.getenv("LOG_LEVEL", "DEBUG" if DEBUG else "INFO")
 
 # Election Configuration
 ELECTION_YEAR = 2026
-SOURCE_NAME = "maryland_boe"
+SOURCE_NAME = "state_filing"  # Generic source name that might be in the enum
 
 # Deduplication Configuration
 EXACT_MATCH_THRESHOLD = 100  # Exact match
@@ -87,5 +87,6 @@ def setup_logging(name: Optional[str] = None) -> logging.Logger:
     
     return logger
 
+SOURCE_NAME = "STATE"  # Use the database enum value for ingest_source. Valid values: FEC, STATE, MANUAL, OTHER
 # Create default logger
 logger = setup_logging()

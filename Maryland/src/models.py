@@ -84,7 +84,7 @@ class NormalizedCandidate(BaseModel):
     external_id_value: Optional[str]
     
     # Source reference
-    source: str = "maryland_boe"
+    source: str = "STATE"
     source_row_id: Optional[str]
     raw_ref: Optional[Dict[str, Any]]
 
@@ -116,7 +116,7 @@ class CandidateFilingInfo(BaseModel):
     filing_date: Optional[date]
     filing_status: Optional[str]
     additional_info: Optional[str]
-    source: str = "maryland_boe"
+    source: str = "STATE"
 
 
 class IngestRun(BaseModel):
@@ -150,7 +150,7 @@ class CandidateMatch(BaseModel):
 class CandidateSource(BaseModel):
     """Track candidate data sources."""
     candidate_id: UUID
-    source: str = "maryland_boe"
+    source: str = "STATE"
     external_id_type: str
     external_id_value: str
     first_seen: datetime = Field(default_factory=datetime.now)
