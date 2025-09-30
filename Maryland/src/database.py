@@ -5,14 +5,14 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 from uuid import UUID, uuid4
 from supabase import create_client, Client
-from models import (
+from .models import (
     IngestRun,
     NormalizedCandidate,
     DatabaseCandidate,
     CandidateSource,
     UpdateStatistics
 )
-from config import SUPABASE_URL, SUPABASE_KEY, DRY_RUN, SOURCE_NAME, setup_logging
+from .config import SUPABASE_URL, SUPABASE_KEY, DRY_RUN, SOURCE_NAME, setup_logging
 
 logger = setup_logging(__name__)
 

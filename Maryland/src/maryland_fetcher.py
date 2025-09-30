@@ -5,7 +5,7 @@ import requests
 from typing import Tuple, Optional
 from io import StringIO
 from tenacity import retry, stop_after_attempt, wait_exponential
-from config import (
+from .config import (
     MARYLAND_STATE_CSV, 
     MARYLAND_LOCAL_CSV,
     REQUEST_TIMEOUT,

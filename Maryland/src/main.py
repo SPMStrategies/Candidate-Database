@@ -4,12 +4,12 @@ import sys
 import time
 from datetime import datetime
 from typing import Dict, Any
-from maryland_fetcher import fetch_maryland_candidates
-from transformer import transform_maryland_data
-from database import SupabaseClient
-from deduplication import deduplicate_candidates
-from models import UpdateStatistics
-from config import (
+from .maryland_fetcher import fetch_maryland_candidates
+from .transformer import transform_maryland_data
+from .database import SupabaseClient
+from .deduplication import deduplicate_candidates
+from .models import UpdateStatistics
+from .config import (
     DRY_RUN, 
     ELECTION_YEAR,
     HIGH_CONFIDENCE_THRESHOLD,

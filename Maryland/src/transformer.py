@@ -4,7 +4,7 @@ import re
 import pandas as pd
 from datetime import datetime
 from typing import List, Dict, Any, Optional, Tuple
-from models import (
+from .models import (
     MarylandCandidateRaw,
     NormalizedCandidate,
     CandidateContactInfo,
@@ -12,7 +12,7 @@ from models import (
     CandidateFilingInfo,
     OfficeLevel
 )
-from config import ELECTION_YEAR, SOURCE_NAME, setup_logging
+from .config import ELECTION_YEAR, SOURCE_NAME, setup_logging
 
 logger = setup_logging(__name__)
 

@@ -2,8 +2,8 @@
 
 from typing import List, Dict, Any, Optional, Tuple
 from fuzzywuzzy import fuzz
-from models import DatabaseCandidate
-from config import (
+from .models import DatabaseCandidate
+from .config import (
     EXACT_MATCH_THRESHOLD,
     HIGH_CONFIDENCE_THRESHOLD,
     REVIEW_THRESHOLD,
