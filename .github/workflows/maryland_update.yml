@@ -103,4 +103,4 @@ jobs:
         run: |
           echo "✅ Maryland candidate update completed successfully"
           echo "Run ID: ${{ github.run_id }}"
-          echo "Time: $(date)
+          echo "Time: $(date)"
