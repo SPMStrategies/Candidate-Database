@@ -59,7 +59,7 @@ jobs:
       # Upload logs as artifacts (always, even on failure)
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: maryland-update-logs-${{ github.run_id }}
           path: Maryland/logs/
