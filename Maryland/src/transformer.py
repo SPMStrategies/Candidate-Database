@@ -20,6 +20,25 @@ logger = setup_logging(__name__)
 class MarylandTransformer:
     """Transform Maryland BOE data to normalized format."""
     
+    @staticmethod
+    def safe_str(value: Any, default: str = '') -> str:
+        """
+        Safely convert a value to string, handling None and pandas NaN values.
+        
+        Args:
+            value: Value to convert
+            default: Default value if conversion fails
+            
+        Returns:
+            String representation of value
+        """
+        if value is None:
+            return default
+        str_val = str(value)
+        if str_val in ('nan', 'None', 'NaN', 'NaT'):
+            return default
+        return str_val.strip()
+    
     # Office level mappings
     FEDERAL_OFFICES = {
         'u.s. senator', 'united states senator',
@@ -84,9 +103,9 @@ class MarylandTransformer:
         Returns:
             Tuple of (full_name, first_name, last_name)
         """
-        # Clean up names
-        last = (last_name or '').strip()
-        first_middle = (first_middle or '').strip()
+        # Clean up names - handle floats and None values
+        last = str(last_name).strip() if last_name is not None and str(last_name) != 'nan' else ''
+        first_middle = str(first_middle).strip() if first_middle is not None and str(first_middle) != 'nan' else ''
         
         # Extract first name from first_middle
         first_name = None
@@ -213,17 +232,21 @@ class MarylandTransformer:
             'zip': None
         }
         
-        if address:
-            result['street'] = address.strip()
+        # Safely convert address to string
+        address_str = self.safe_str(address)
+        if address_str:
+            result['street'] = address_str
         
-        if city_state_zip:
+        # Safely convert city_state_zip to string
+        city_state_zip_str = self.safe_str(city_state_zip)
+        if city_state_zip_str:
             # Try to parse city, state, zip
-            parts = city_state_zip.strip().split(',')
+            parts = city_state_zip_str.split(',')
             if parts:
                 result['city'] = parts[0].strip()
             
             # Look for ZIP code
-            zip_match = re.search(r'\b(\d{5})(?:-\d{4})?\b', city_state_zip)
+            zip_match = re.search(r'\b(\d{5})(?:-\d{4})?\b', city_state_zip_str)
             if zip_match:
                 result['zip'] = zip_match.group(1)
         
@@ -246,8 +269,9 @@ class MarylandTransformer:
                 row.get('candidate_first_name_and_middle_name')
             )
             
-            # Get office information
-            office_name = row.get('office_name', '').strip()
+            # Get office information - handle non-string values
+            office_name_raw = row.get('office_name', '')
+            office_name = str(office_name_raw).strip() if office_name_raw is not None and str(office_name_raw) != 'nan' else ''
             office_level = self.determine_office_level(office_name)
             
             # Parse district
@@ -265,8 +289,9 @@ class MarylandTransformer:
                 row.get('campaign_mailing_city_state_and_zip')
             )
             
-            # Determine status
-            status = row.get('candidate_status', 'active').lower()
+            # Determine status - handle non-string values
+            status_raw = row.get('candidate_status', 'active')
+            status = str(status_raw).lower() if status_raw is not None and str(status_raw) != 'nan' else 'active'
             is_withdrawn = 'withdrawn' in status
             
             # Create normalized candidate
@@ -274,18 +299,18 @@ class MarylandTransformer:
                 'full_name': full_name,
                 'first_name': first_name,
                 'last_name': last_name,
-                'party': row.get('office_political_party'),
+                'party': self.safe_str(row.get('office_political_party')),
                 'office_level': office_level.value,
                 'office_name': office_name,
                 'state': 'MD',
                 'district_number': district,
                 'ocd_division_id': ocd_id,
                 'election_year': ELECTION_YEAR,
-                'gender': row.get('candidate_gender'),
-                'jurisdiction': row.get('candidate_residential_jurisdiction'),
-                'committee_name': row.get('committee_name'),
-                'website': row.get('website'),
-                'email': row.get('email'),
+                'gender': self.safe_str(row.get('candidate_gender')),
+                'jurisdiction': self.safe_str(row.get('candidate_residential_jurisdiction')),
+                'committee_name': self.safe_str(row.get('committee_name')),
+                'website': self.safe_str(row.get('website')),
+                'email': self.safe_str(row.get('email')),
                 'status': status,
                 'is_withdrawn': is_withdrawn,
                 'source': SOURCE_NAME,
@@ -294,30 +319,33 @@ class MarylandTransformer:
             
             # Create contact info
             contact_info = {
-                'phone_primary': row.get('public_phone'),
+                'phone_primary': self.safe_str(row.get('public_phone')),
                 'mailing_address_street': address_parts['street'],
                 'mailing_address_city': address_parts['city'],
                 'mailing_address_state': address_parts['state'],
                 'mailing_address_zip': address_parts['zip'],
-                'residential_jurisdiction': row.get('candidate_residential_jurisdiction')
+                'residential_jurisdiction': self.safe_str(row.get('candidate_residential_jurisdiction'))
             }
             
             # Create social media info
             social_media = []
-            if row.get('facebook'):
+            facebook = self.safe_str(row.get('facebook'))
+            if facebook:
                 social_media.append({
                     'platform': 'facebook',
-                    'handle_or_url': row.get('facebook')
+                    'handle_or_url': facebook
                 })
-            if row.get('x'):
+            x_twitter = self.safe_str(row.get('x'))
+            if x_twitter:
                 social_media.append({
                     'platform': 'x',
-                    'handle_or_url': row.get('x')
+                    'handle_or_url': x_twitter
                 })
-            if row.get('other'):
+            other_social = self.safe_str(row.get('other'))
+            if other_social:
                 social_media.append({
                     'platform': 'other',
-                    'handle_or_url': row.get('other')
+                    'handle_or_url': other_social
                 })
             
             # Create filing info
@@ -325,7 +353,7 @@ class MarylandTransformer:
                 'filing_type': filing_type,
                 'filing_date': filing_date,
                 'filing_status': status,
-                'additional_info': row.get('additional_information'),
+                'additional_info': self.safe_str(row.get('additional_information')),
                 'source': SOURCE_NAME
             }
             

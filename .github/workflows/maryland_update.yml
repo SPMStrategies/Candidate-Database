@@ -43,6 +43,15 @@ jobs:
           pip install --force-reinstall --no-cache-dir numpy pandas
           pip install -r Maryland/requirements.txt
       
+      # Verify environment setup
+      - name: Verify environment
+        run: |
+          echo "Checking environment setup..."
+          echo "SUPABASE_URL is set: ${{ secrets.SUPABASE_URL != '' }}"
+          echo "SUPABASE_KEY is set: ${{ secrets.SUPABASE_KEY != '' }}"
+          echo "Python version: $(python --version)"
+          echo "Working directory: $(pwd)"
+          
       # Run the update script
       - name: Run Maryland candidate update
         env:

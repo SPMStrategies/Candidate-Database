@@ -18,8 +18,17 @@ LOG_DIR.mkdir(exist_ok=True)
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
+# Debug: Print environment variable status (without values)
+print(f"Environment check: SUPABASE_URL={'set' if SUPABASE_URL else 'NOT SET'}")
+print(f"Environment check: SUPABASE_KEY={'set' if SUPABASE_KEY else 'NOT SET'}")
+
 if not SUPABASE_URL or not SUPABASE_KEY:
-    raise ValueError("SUPABASE_URL and SUPABASE_KEY must be set in environment variables")
+    missing = []
+    if not SUPABASE_URL:
+        missing.append("SUPABASE_URL")
+    if not SUPABASE_KEY:
+        missing.append("SUPABASE_KEY")
+    raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
 
 # Maryland BOE URLs
 MARYLAND_STATE_CSV = os.getenv(
