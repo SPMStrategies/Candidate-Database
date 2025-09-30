@@ -39,6 +39,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          # Force reinstall numpy and pandas to avoid binary incompatibility
+          pip install --force-reinstall --no-cache-dir numpy pandas
           pip install -r Maryland/requirements.txt
       
       # Run the update script
