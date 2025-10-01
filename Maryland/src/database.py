@@ -228,12 +228,22 @@ class SupabaseClient:
             logger.info("DRY RUN: Would fetch existing candidates")
             return []
         
-        # Get candidates
-        result = self.client.table('candidates').select(
+        # Get candidates. Different versions of the Supabase/PostgREST client expose
+        # an `or_` helper; if it's not available, pass the `or` param to execute().
+        select_q = self.client.table('candidates').select(
             "*, candidate_identifiers(authority, id_value)"
-        ).or_(
-            f"election_year.eq.{election_year},election_year.is.null"
-        ).execute()
+        )
+
+        try:
+            # Preferred: use client-side or_() if available
+            result = select_q.or_(
+                f"election_year.eq.{election_year},election_year.is.null"
+            ).execute()
+        except AttributeError:
+            # Fallback: pass 'or' as an HTTP query param
+            result = select_q.execute(params={
+                'or': f"election_year.eq.{election_year},election_year.is.null"
+            })
         
         candidates = []
         for row in result.data:
