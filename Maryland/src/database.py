@@ -297,6 +297,7 @@ class SupabaseClient:
             'office_level': candidate['office_level'],
             'office_name': candidate['office_name'],
             'ocd_division_id': candidate.get('ocd_division_id'),
+            'district_number': candidate.get('district_number'),
             'election_year': candidate['election_year'],
             'gender': candidate.get('gender'),
             'jurisdiction': candidate.get('jurisdiction'),
@@ -370,10 +371,17 @@ class SupabaseClient:
             logger.info(f"DRY RUN: Would update candidate {candidate_id}")
             return True
         
-        # Update main candidate record
+        # Update main candidate record - only include fields that exist in the database
+        valid_candidate_fields = {
+            'full_name', 'first_name', 'last_name', 'party', 'office_level',
+            'office_name', 'ocd_division_id', 'district_number', 'election_year', 
+            'gender', 'jurisdiction', 'committee_name', 'website', 'contact_email',
+            'status', 'is_withdrawn', 'district_id'
+        }
+        
         candidate_updates = {
             k: v for k, v in updates['candidate'].items()
-            if k not in ['raw_ref', 'source']
+            if k in valid_candidate_fields
         }
         
         if candidate_updates:
