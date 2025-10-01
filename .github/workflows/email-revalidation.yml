@@ -1,0 +1,142 @@
+name: Email 60-Day Revalidation
+
+on:
+  schedule:
+    # Run daily at 4 AM ET (9 AM UTC during standard time, 8 AM UTC during daylight saving)
+    - cron: '0 9 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  revalidate-emails:
+    name: Revalidate Due Emails
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-email-validator-${{ hashFiles('email_validator/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-email-validator-
+            ${{ runner.os }}-pip-
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r email_validator/requirements.txt
+      
+      - name: Check Hunter.io credits
+        env:
+          HUNTER_API_KEY: ${{ secrets.HUNTER_API_KEY }}
+        run: |
+          python -c "
+          import sys
+          sys.path.append('email_validator')
+          from hunter_client import HunterClient
+          
+          try:
+              client = HunterClient()
+              credits = client.check_credits()
+              print(f'Hunter.io credits available: {credits}')
+              
+              if credits < 100 and credits >= 0:
+                  print('⚠️  WARNING: Low Hunter.io credits!')
+              elif credits == 0:
+                  print('❌ ERROR: No Hunter.io credits available!')
+                  sys.exit(1)
+          except Exception as e:
+              print(f'Could not check credits: {e}')
+          "
+      
+      - name: Revalidate due emails
+        env:
+          HUNTER_API_KEY: ${{ secrets.HUNTER_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          echo "Starting 60-day email revalidation..."
+          echo "Date: $(date)"
+          cd email_validator
+          python scripts/revalidate_due.py
+      
+      - name: Generate validation report
+        if: always()
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          cd email_validator
+          echo "" | python scripts/generate_report.py || true
+      
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: email-revalidation-report-${{ github.run_id }}
+          path: |
+            email_validator/email_validation_report.html
+            email_validator/email_validation_report.json
+          retention-days: 30
+      
+      - name: Create issue if high failure rate
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            
+            // Get validation stats
+            const pythonScript = `
+            import sys
+            import json
+            sys.path.append('email_validator')
+            from database import EmailDatabase
+            db = EmailDatabase()
+            stats = db.get_validation_statistics()
+            print(json.dumps(stats))
+            `;
+            
+            const output = execSync(`python -c "${pythonScript}"`).toString();
+            const stats = JSON.parse(output);
+            
+            // Check if invalid rate is high
+            const total = stats.total_validated || 0;
+            const invalid = stats.invalid_emails || 0;
+            const invalidRate = total > 0 ? (invalid / total) * 100 : 0;
+            
+            if (invalidRate > 30) {
+              const issue = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `High Invalid Email Rate Detected - ${new Date().toISOString().split('T')[0]}`,
+                body: `The email revalidation detected a high invalid email rate.
+                
+                **Statistics:**
+                - Total validated: ${total}
+                - Invalid emails: ${invalid}
+                - Invalid rate: ${invalidRate.toFixed(1)}%
+                - Disposable emails: ${stats.disposable_emails || 0}
+                - Role accounts: ${stats.role_accounts || 0}
+                
+                **Workflow Run:** [View logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+                
+                Please review the validation report and take appropriate action.`,
+                labels: ['email-validation', 'automated', 'needs-attention']
+              });
+              
+              console.log(`Created issue #${issue.data.number} for high invalid email rate`);
+            }

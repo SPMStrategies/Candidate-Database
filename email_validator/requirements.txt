@@ -1,0 +1,17 @@
+# Email validation dependencies
+
+# Core dependencies
+requests==2.31.0
+python-dotenv==1.0.0
+supabase==2.0.3
+
+# Email validation
+email-validator==2.1.0
+dnspython==2.4.2
+
+# Rate limiting for API calls
+ratelimit==2.2.1
+
+# Testing
+pytest==7.4.3
+pytest-mock==3.12.0

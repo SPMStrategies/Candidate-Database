@@ -1,0 +1,102 @@
+name: Validate New Emails
+
+on:
+  # Trigger after state data updates
+  workflow_run:
+    workflows: ["Update Maryland Candidates", "Delaware Candidate Update"]
+    types: [completed]
+  
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      use_hunter:
+        description: 'Use Hunter.io API'
+        type: boolean
+        default: true
+
+jobs:
+  validate-new-emails:
+    name: Validate New Emails
+    runs-on: ubuntu-latest
+    # Only run if the triggering workflow succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-email-validator-${{ hashFiles('email_validator/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-email-validator-
+            ${{ runner.os }}-pip-
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r email_validator/requirements.txt
+      
+      - name: Validate new emails
+        env:
+          HUNTER_API_KEY: ${{ secrets.HUNTER_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          echo "Starting validation of new emails..."
+          echo "Triggered by: ${{ github.event.workflow_run.workflow.name || 'Manual' }}"
+          cd email_validator
+          python scripts/validate_new.py
+      
+      - name: Generate validation report
+        if: always()
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          cd email_validator
+          echo "" | python scripts/generate_report.py || true
+      
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: email-validation-report-${{ github.run_id }}
+          path: |
+            email_validator/email_validation_report.html
+            email_validator/email_validation_report.json
+          retention-days: 30
+      
+      - name: Check validation results
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          # Simple Python script to check results
+          python -c "
+          import sys
+          sys.path.append('email_validator')
+          from database import EmailDatabase
+          db = EmailDatabase()
+          stats = db.get_validation_statistics()
+          
+          print('\\n📊 Validation Summary:')
+          print(f\"  Total emails: {stats.get('total_candidates_with_email', 0)}\")
+          print(f\"  Validated: {stats.get('total_validated', 0)}\")
+          print(f\"  Valid: {stats.get('valid_emails', 0)}\")
+          print(f\"  Invalid: {stats.get('invalid_emails', 0)}\")
+          print(f\"  Coverage: {stats.get('validation_coverage', 0)}%\")
+          
+          # Warn if invalid rate is high
+          total = stats.get('total_validated', 1)
+          invalid = stats.get('invalid_emails', 0)
+          if total > 0 and invalid / total > 0.25:
+              print('\\n⚠️  WARNING: High invalid email rate detected!')
+          "
