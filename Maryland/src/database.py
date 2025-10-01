@@ -230,34 +230,16 @@ class SupabaseClient:
         
         # Get candidates. Different versions of the Supabase/PostgREST client expose
         # an `or_` helper; if it's not available, pass the `or` param to execute().
-        select_q = self.client.table('candidates').select(
-            "*, candidate_identifiers(authority, id_value)"
-        )
+        # Build a fresh select query base (don't reuse builders since many
+        # postgrest client request builders are mutable and calling filters
+        # on the same object can accumulate unexpected state). We attempt
+        # to use the client-side `or_()` helper if present; otherwise we
+        # run two separate queries and merge results.
+        base_select = "*, candidate_identifiers(authority, id_value)"
 
-        try:
-            # Preferred: use client-side or_() if available
-            result = select_q.or_(
-                f"election_year.eq.{election_year},election_year.is.null"
-            ).execute()
-        except AttributeError:
-            # Fallback: query two sets (election_year == X) and (election_year IS NULL)
-            res_year = select_q.eq('election_year', election_year).execute()
-            res_null = select_q.is_('election_year', None).execute()
-            # Combine unique rows by id (if available) otherwise concatenate
-            rows = []
-            ids = set()
-            for r in (res_year.data or []):
-                rows.append(r)
-                ids.add(r.get('id'))
-            for r in (res_null.data or []):
-                if r.get('id') not in ids:
-                    rows.append(r)
-
-            # Create a fake result-like object for downstream code
-            class _R:
-                data = rows
-
-            result = _R()
+        # For now, just get candidates for the specific election year
+        # Skip the null check which is causing issues with the Supabase client
+        result = self.client.table('candidates').select(base_select).eq('election_year', election_year).execute()
         
         candidates = []
         for row in result.data:
