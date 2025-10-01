@@ -4,6 +4,11 @@ import json
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 from uuid import UUID, uuid4
+import math
+from datetime import date, datetime
+from enum import Enum as _Enum
+
+# We'll handle numpy-like scalars via duck-typing (check for .item()) to avoid hard dependency
 from supabase import create_client, Client
 from .models import (
     IngestRun,
@@ -12,7 +17,7 @@ from .models import (
     CandidateSource,
     UpdateStatistics
 )
-from .config import SUPABASE_URL, SUPABASE_KEY, DRY_RUN, SOURCE_NAME, setup_logging
+from .config import SUPABASE_URL, SUPABASE_KEY, DRY_RUN, SOURCE_NAME, setup_logging, LOG_DIR
 
 logger = setup_logging(__name__)
 
@@ -82,6 +87,55 @@ class SupabaseClient:
             logger.info(f"DRY RUN: Would stage {len(candidates)} candidates")
             return len(candidates)
         
+        # Helper: sanitize values to JSON-serializable primitives for PostgREST
+        def _sanitize_value(v):
+            # None stays None
+            if v is None:
+                return None
+
+            # basic Python types
+            if isinstance(v, (str, bool, int)):
+                return v
+
+            # floats - handle NaN/inf
+            if isinstance(v, float):
+                if math.isnan(v) or math.isinf(v):
+                    return None
+                return float(v)
+
+            # datetime/date -> ISO
+            if isinstance(v, (datetime, date)):
+                return v.isoformat()
+
+            # UUID -> str
+            if isinstance(v, UUID):
+                return str(v)
+
+            # Enums -> their value
+            if isinstance(v, _Enum):
+                return v.value
+
+            # numpy-like scalars: try .item() if available (duck-typing)
+            if hasattr(v, "item") and callable(getattr(v, "item")):
+                try:
+                    return v.item()
+                except Exception:
+                    return None
+
+            # Lists/tuples -> sanitize each element
+            if isinstance(v, (list, tuple)):
+                return [_sanitize_value(x) for x in v]
+
+            # Dicts -> sanitize values
+            if isinstance(v, dict):
+                return {str(k): _sanitize_value(val) for k, val in v.items()}
+
+            # Fallback: try to stringify
+            try:
+                return str(v)
+            except Exception:
+                return None
+
         # Prepare data for staging table
         staged_data = []
         for idx, candidate_data in enumerate(candidates):
@@ -113,9 +167,47 @@ class SupabaseClient:
         
         for i in range(0, len(staged_data), batch_size):
             batch = staged_data[i:i+batch_size]
-            result = self.client.table('normalized_candidates_stage').insert(batch).execute()
-            total_staged += len(result.data)
-            logger.info(f"Staged batch {i//batch_size + 1}: {len(batch)} candidates")
+            # Sanitize batch to ensure all values are JSON-serializable
+            sanitized_batch = []
+            for record in batch:
+                sanitized_record = {k: _sanitize_value(v) for k, v in record.items()}
+                sanitized_batch.append(sanitized_record)
+            # Validate each sanitized record can be JSON-encoded before sending to PostgREST
+            import json
+            for ridx, srec in enumerate(sanitized_batch):
+                try:
+                    # ensure_ascii False to catch unicode issues as well
+                    json.dumps(srec, ensure_ascii=False)
+                except Exception as ve:
+                    logger.error(f"Record {ridx} in batch {i//batch_size + 1} is not JSON-serializable: {ve}")
+                    try:
+                        debug_file = LOG_DIR / f"staging_record_error_{uuid4().hex}.json"
+                        debug_file.parent.mkdir(parents=True, exist_ok=True)
+                        with open(debug_file, 'w', encoding='utf-8') as fh:
+                            fh.write('/* sanitization error: ' + str(ve) + ' */\n')
+                            json.dump(srec, fh, ensure_ascii=False, indent=2)
+                        logger.error(f"Wrote failing sanitized record to {debug_file}")
+                    except Exception as ex2:
+                        logger.error(f"Failed to write failing record debug file: {ex2}")
+                    # raise a clear error so CI stops and we can inspect the file
+                    raise ValueError(f"Sanitized record not serializable: {ve}")
+
+            try:
+                result = self.client.table('normalized_candidates_stage').insert(sanitized_batch).execute()
+                total_staged += len(result.data)
+                logger.info(f"Staged batch {i//batch_size + 1}: {len(batch)} candidates")
+            except Exception as e:
+                # Log error and write sanitized batch to a debug file for inspection
+                logger.error(f"Error staging batch {i//batch_size + 1}: {e}")
+                try:
+                    debug_file = LOG_DIR / f"staging_debug_{uuid4().hex}.json"
+                    debug_file.parent.mkdir(parents=True, exist_ok=True)
+                    with open(debug_file, 'w', encoding='utf-8') as fh:
+                        json.dump(sanitized_batch, fh, ensure_ascii=False, indent=2)
+                    logger.error(f"Wrote sanitized batch to {debug_file}")
+                except Exception as ex2:
+                    logger.error(f"Failed to write staging debug file: {ex2}")
+                raise
         
         logger.info(f"Total candidates staged: {total_staged}")
         return total_staged
