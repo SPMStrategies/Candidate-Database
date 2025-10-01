@@ -64,6 +64,9 @@ class SupabaseClient:
         if 'finished_at' in ingest_data and ingest_data['finished_at']:
             ingest_data['finished_at'] = ingest_data['finished_at'].isoformat()
         
+        # Add source_state for Maryland
+        ingest_data['source_state'] = 'MD'
+        
         result = self.client.table('ingest_runs').insert(ingest_data).execute()
         
         self.ingest_run_id = UUID(result.data[0]['id'])
@@ -157,7 +160,8 @@ class SupabaseClient:
                 'election_year': candidate['election_year'],
                 'external_id_type': 'maryland_row_id',
                 'external_id_value': str(idx),
-                'raw_ref': candidate.get('raw_ref', {})
+                'raw_ref': candidate.get('raw_ref', {}),
+                'source_state': 'MD'  # Mark as Maryland in staging
             }
             staged_data.append(staged)
         
@@ -305,7 +309,8 @@ class SupabaseClient:
             'website': candidate.get('website'),
             'contact_email': candidate.get('email'),
             'status': candidate.get('status', 'active'),
-            'is_withdrawn': candidate.get('is_withdrawn', False)
+            'is_withdrawn': candidate.get('is_withdrawn', False),
+            'source_state': candidate.get('source_state', 'MD')  # Use provided source_state or default to MD
         }
         
         result = self.client.table('candidates').insert(candidate_record).execute()

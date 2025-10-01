@@ -1,0 +1,64 @@
+name: Delaware Candidate Update
+
+on:
+  schedule:
+    # Run daily at 3 AM ET (8 AM UTC) - offset from Maryland's 2 AM
+    - cron: '0 8 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update-delaware:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-delaware-${{ hashFiles('Delaware/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-delaware-
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r Delaware/requirements.txt
+    
+    - name: Fetch Delaware candidate data
+      run: |
+        # Create data directory
+        mkdir -p Delaware/data
+        
+        # Cloudscraper will fetch and cache the HTML files
+        echo "Using cloudscraper to fetch Delaware candidate data..."
+    
+    - name: Run Delaware update
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        DRY_RUN: false
+      run: |
+        cd Delaware
+        python -m src.main
+    
+    - name: Upload logs
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: delaware-logs
+        path: Delaware/logs/
+        retention-days: 7
+    
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "Delaware update failed. Check logs for details."
+        # Add notification logic here (email, Slack, etc.)

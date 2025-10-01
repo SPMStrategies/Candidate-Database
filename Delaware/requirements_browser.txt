@@ -1,0 +1,15 @@
+# Browser automation dependencies for Delaware
+
+# Core browser automation
+playwright==1.40.0
+playwright-stealth==1.0.6
+
+# Additional stealth measures
+fake-useragent==1.4.0
+
+# Utilities
+python-dotenv==1.0.0
+beautifulsoup4==4.12.2
+
+# Retry logic
+tenacity==8.2.3

@@ -1,0 +1,20 @@
+# Delaware candidate data ingestion dependencies
+
+# Web scraping and HTML parsing
+beautifulsoup4==4.12.2
+requests==2.31.0
+lxml==4.9.3
+cloudscraper==1.2.71  # For bypassing Cloudflare
+
+# Database
+supabase==2.0.3
+
+# Data processing  
+pandas==2.1.4
+
+# Environment and configuration
+python-dotenv==1.0.0
+
+# Shared with Maryland (for deduplication)
+fuzzywuzzy==0.18.0
+python-Levenshtein==0.23.0

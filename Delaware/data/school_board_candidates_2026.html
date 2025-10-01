@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- description and page title -->
+<meta name="description" content="##description##"/>
+<meta name="keywords" content="##keyword##"/>
+<meta name="author" content="The State of Delaware" />
+<title>
+  Election Report - Department of Elections - State of Delaware
+</title>
+
+<!-- Header Include File -->
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://elections.delaware.gov/img/favicon.png">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Custom Styles for Header and Footer CLF4 -->
+    <link href="/css/CLF_styles.css" rel="stylesheet" type='text/css'>
+
+<!-- Google tag (gtag.js) --> 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CB055P36N8"></script> 
+    <script> 
+      window.dataLayer = window.dataLayer || []; 
+      function gtag(){dataLayer.push(arguments);} 
+      gtag('js', new Date()); 
+      gtag('config', 'G-CB055P36N8'); 
+    </script> 
+
+    <!-- Body Font Styles (From Google.com/fonts) -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+
+    <!-- Header Font Styles (From Google.com/fonts) -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+    <!-- Core JavaScript
+    ================================================== -->
+    <script src="/js/jquery-1.12.0.min.js"></script>
+    <script src="/js/jquery.easing.1.3.js"></script>
+    <script src="/js/jquery.smooth-scroll.min.js"></script>
+    <script src="/js/jquery.inview.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="/js/ready.js"></script>
+	
+	<!-- Funnelback INCLUDES -->
+    <link rel="stylesheet" type="text/css" href="/funnelback/funnelback.autocompletion-2.6.0.css" />
+    <link type="text/css" media="screen" rel="stylesheet" href="/funnelback/funnelback.css" />
+    <script src="/funnelback/funnelbackConfig.js"></script>
+    <script src="/funnelback/typeahead.bundle-0.11.1.min.js"></script>
+    <script src="/funnelback/handlebars-4.0.5.min.js"></script>
+    <script src="/funnelback/funnelback.autocompletion-2.6.0.js"></script>
+    <!-- END FUNNELBACK INCLUDES -->
+	
+    <!-- Read Speaker -->
+    <!--<script src="http://f1.na.readspeaker.com/script/7262/ReadSpeaker.js?pids=embhl"></script>-->
+	<script src="https://cdn-na.readspeaker.com/script/7262/ReadSpeaker.js?pids=embhl" type="text/javascript"></script>
+    
+	<!--
+    <script>
+      FontAwesomeConfig = { searchPseudoElements: true };
+    </script>
+    -->
+    <!-- Font Awesome Icons -->
+	<script src="https://use.fontawesome.com/releases/v6.4.2/js/all.js" data-observe-mutations></script>
+    <script src="https://use.fontawesome.com/releases/v6.4.2/js/v4-shims.js"></script>
+	<!--
+    <script src="https://use.fontawesome.com/releases/v5.1.0-6/js/all.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.1.0-6/js/v4-shims.js"></script>
+	-->
+</head>
+
+<body>
+<header>
+  <link href="/css/agency.css" rel="stylesheet" type="text/css">
+  <!-- BEGIN Fixed Main Nav Bar -->
+  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-nav">
+        <div class="navbar-header">
+		<a href="https://delaware.gov" class="custom-focus">
+			<img
+			  src="/img/delaware_global_d.png"
+              alt="delaware logo"
+			  aria-hidden="true"
+			  class="border_none delaware_d_logo"
+			/>
+			<img
+			  src="/img/delaware_global_text.png"
+			  alt="Visit Delaware.gov home page"
+			  class="border_none delaware_text"
+			/>
+		</a>
+    </div>
+    <a class="skip-main" href="#main-content">Skip to Content</a>
+    <a class="skip-main" href="#agencyFooter">Skip to Navigation</a>
+    <ul class="nav masthead-nav hidden-xs">
+      <li>
+        <a target="_blank" href="https://delaware.gov/topics/agencylist_alpha" class="custom-focus">
+		<i class="far fa-building fa-fw"></i> Agencies
+		</a>
+      </li>
+      <li>
+        <a target="_blank" href="https://news.delaware.gov" class="custom-focus">
+			<i class="far fa-newspaper fa-fw"></i> News
+		</a>
+      </li>
+      <li>
+        <a target="_blank" href="https://delaware.gov/topics" class="custom-focus">
+			<i class="far fa-comments fa-fw"></i> Topics
+		</a>
+      </li>
+      <li>
+        <a target="_blank" href="https://delaware.gov/help/degov-contact.shtml" class="custom-focus"
+          ><i class="fas fa-mobile-alt fa-fw"></i> Contact
+		</a>
+      </li>
+    </ul>
+            <div id="sb-search-main" class="sb-search-main pull-right">
+                <form title="Site Search Form">
+                    <input class="sb-search-main-input" title="Search This Site" placeholder="Search This Site" type="text" value="" name="txtKeywordMain" id="txtKeywordMain"/>
+                    <input class="sb-search-main-submit" title="Submit Search"  type="submit" value="" style="display: none"/>
+                    <span class="sb-icon-main-search"><i class="fa fa-search fa-fw"></i></span>
+                </form>
+            </div>
+    </div>
+</div>
+  <!-- END Fixed Main Nav Bar -->
+
+  <!-- EMERGENCY NOTIFICATION SYSTEM (ENS) AREA -->
+  <!-- Uncomment to use this section to use in emergency situations, when finished comment it out again to make it disappear 
+-->
+<!--
+<div id="ens" class="alert alert-danger">
+   <button class="close" data-dismiss="alert" aria-label="Dismiss alert">
+    <span aria-hidden="true"><i class="fa fa-times fa-fw"></i></span>
+  </button>
+  <p class="ens-message">
+    <i class="fa fa-exclamation-circle fa-lg fa-fw"></i>
+    The Department of Elections website is undergoing scheduled maintenance. Visitors may experience intermittent issues with website functionality during this brief maintenance period.
+    -->
+<!--
+   <a
+      class="ens-link"
+      href="http://news.delaware.gov/2013/12/10/governors-office-statement-on-weather-conditions/"
+      >&nbsp;More&nbsp;Info&nbsp;<i class="fa fa-long-arrow-right fa-fw"></i
+    ></a>-->
+<!--
+ </p>
+ 
+</div>
+-->
+  <!-- END EMERGENCY NOTIFICATION AREA -->
+
+  <!-- AGENCY TOP NAVIGATION -->
+  <!-- Agency Menu -->
+<div id="cssmenuTop" data-spy="affix" data-offset-top="60" class="navbar">
+  <div id="cssmenu" class="container-nav">
+      <div class="navbar-header">
+        <div tabindex="0" id="burger" title="Collapse or Expand Elections menu items" class="navbar-toggle" data-toggle="collapse" data-target="#menu-nav">
+            <div id="nav-icon-hamburger">
+            <span></span>
+            <span></span>
+            <span></span> 
+            <span></span>
+            <span></span>
+            <span></span> 
+            </div>
+        </div> 
+		<a id="logo" href="/" style="padding: 0;"  class="navbar-brand">
+		  <img height="50" width="126"
+			src="/img/agency-logos/DelawareElectionsLogo_SVG.svg"
+			alt="Link to Delaware Department of Elections home page"
+		  />
+		</a>
+      </div>
+      <div class="collapse navbar-collapse" id="menu-nav">
+          <ul id="agency-menu" class="nav navbar-nav">
+            <li class="dropdown">
+                <a id="about" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">about&nbsp;<span     class="glyphicon glyphicon-chevron-down"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/aboutagency.shtml">About Elections</a></li>
+                    <li><a href="/public/calendar/calendars.shtml">Calendars</a></li>
+                    <li><a href="/public/letter.shtml">Commissioner's Letter</a></li>
+                    <li><a href="/public/faq">FAQs</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+            <a id="services" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Services&nbsp;<span     class="glyphicon glyphicon-chevron-down"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/voter/absentee/absentee_aff.shtml">Absentee Statement</a></li>
+              <li><a href="/voter/absentee/">Absentee Voting</a></li>	
+              <li><a href="https://cfrs.elections.delaware.gov/">Campaign Finance</a></li>
+              <li><a href="/candidates/">Candidates</a></li>
+              <li><a href="/public/foia/foia.shtml">FOIA</a></li>
+              <!--<li><a href="/elections/mockelection/">Mock Election</a></li>-->
+              <li><a href="/voter/absentee/uocava.shtml">Uniformed &amp; Overseas</a></li>
+              <li><a href="/voter/">Voter Registration</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a id="information" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Information&nbsp;<span     class="glyphicon glyphicon-chevron-down"></span></a>
+            <ul class="dropdown-menu">
+              
+              <li><a href="/candidates/candidatelist">Ballot Qualified Candidates - State Elections</a></li>	
+              <li><a href="/elections/elections.shtml">Elections</a></li>	
+              <li><a href="/public/calendar/calendars.shtml">Elections Calendars</a></li>
+              <li><a href="/voter/law.shtml">Election Law</a></li>
+              <li><a href="/results/index.shtml">Election Results</a></li>
+              <li><a href="/public/forms/">Forms &amp; Publications</a></li>
+              <li><a href="/maps/">Maps</a></li>
+              <li><a href="/municipality/">Municipal Elections</a></li>
+              <li><a href="/elections/post_election_audits.shtml">Post-Election Audits</a></li>
+              <li><a href="/elections/primary/presidential.shtml">Presidential Primary</a></li>
+              <li><a href="/candidates/regtotals.shtml">Voter Registration Data</a></li>
+              <li><a href="/voter/technology.shtml">Voting Machines</a></li>
+              <li><a href="/elections/electionofficers.shtml">Working at the Polls</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a id="social" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Social&nbsp;<span     class="glyphicon glyphicon-chevron-down"></span></a>
+            <ul class="dropdown-menu">
+              <li><a target="_blank" href="https://www.facebook.com/DoE.Delaware" title="Go to Facebook"><i class="fa fa-facebook fa-lg fa-fw" aria-hidden="true"></i> Facebook</a></li>		  
+              <li><a target="_blank" href="https://twitter.com/DE_Elections" title="Go to Twitter"><i class="fa fa-twitter fa-lg fa-fw" aria-hidden="true"></i> Twitter</a></li>
+              <li><a target="_blank" href="https://www.youtube.com/channel/UCYITHvWQRkGXNIZ3ctvH7VQ" title="Go to Youtube"><i class="fa fa-youtube fa-lg fa-fw" aria-hidden="true"></i> YouTube</a></li>
+              <li><a target="_blank" href="https://www.instagram.com/doe.delaware/" title="Go to Instagram"><i class="fa fa-instagram fa-lg fa-fw" aria-hidden="true"></i> Instagram</a></li>
+             </ul> 
+          </li>
+          <li class="dropdown">
+            <a id="contact" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contact Us&nbsp;<span     class="glyphicon glyphicon-chevron-down"></span></a>
+            <ul class="dropdown-menu">          
+              <li><a href="/locations.shtml">Directory and Locations</a></li>
+            </ul>
+          </li>      
+        </ul>
+    </div>
+    <div id="agencyitems">
+      <!--<a href="https://delaware.gov" tabindex="-1"
+        ><img
+          aria-hidden="true"
+          src="/img/delaware_global_d_blue.png"
+          class="logo_fade hidden-xs"
+          alt="" />
+        <img
+          src="/img/delaware_global_text_blue.png"
+          class="delaware_fade"
+          alt="Visit Delaware.gov home page"
+      /></a>-->
+      <p class="menu_text"></p><!-- on some screen sizes this displays in weird places-->
+      <!--[if !IE 8]><!-->
+      <div id="sb-search" class="sb-search pull-right">
+        
+        <form id="agency-search" name="agency-search" role="search">
+          <input
+            class="sb-search-input"
+            placeholder="Search This Site"
+            type="text"
+            value=""
+            aria-label="Search This Site"
+            name="agency-search-main"
+            id="agency-search-main"
+          />
+          <!--<label for="agency-search-main"></label>-->
+          <input
+            class="sb-search-submit"
+            name="agencySearchButton"
+            id="agencySearchButton"
+            type="submit"
+            value="Search"
+          />
+          <span class="sb-icon-search"><i class="fa fa-search fa-fw"></i></span>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!--For assistive tech, pressing enter on the hamburger should work like a click -->
+<!--For assistive tech, pressing escape on the hamburger should unclick/collapse the menu -->
+<script>
+$('#burger').on('keyup', function(e) {
+    if(e.key === "Enter") {
+      $(this).trigger('click');
+    }
+	if(e.key === "Escape") {
+	  let bln = $('#burger').hasClass('collapsed')
+	  if (!bln) {
+		$(this).trigger('click');
+	  }
+    }
+});
+</script>
+
+  <!-- END AGENCY TOP NAVIGATION -->
+  
+</header>
+
+<!-- B E G I N   M A I N   C O N T E N T -->
+    <main id="main-content" >
+      <!-- Readspeaker -->
+      <div class="container" id="readSpeak_test">
+	  <br>
+        <div class="row">
+          <div class="col-sm-12">
+            <div id="readspeaker_button1" class="rs_skip rsbtn rs_preserve" style="display: none;">
+              <!-- Replace customerid=7262 with your customerid in the href below-->
+              <a
+                class="rsbtn_play"
+                accesskey="L"
+                title="Listen to this page using ReadSpeaker"
+                href="//app-na.readspeaker.com/cgi-bin/rsent?customerid=7262&lang=en_us&readid=readSpeak_test&url=##url##">
+                <span class="rsbtn_left rsimg rspart">
+                  <span class="rsbtn_text">
+                    <span>Listen</span>
+                  </span>
+                </span>
+                <span class="rsbtn_right rsimg rsplay rspart"></span>
+              </a>
+            </div>
+		  	<!-- Customized content start --><h1>School Board Election<br>5/13/2026<br>Filed School Board Candidates</h1><span class='local-note-updated'>Updated on: 09/08/2025 02:55 PM</span><br>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<p><strong>
+		The Candidates listed below are the filed School Board Candidates for the 2026 School Board Elections
+		</strong></p>
+		<p>IMPORTANT NOTICES:<br>
+		</p><ul>
+			<li>
+				An individual seeking election to a school board is not considered an &quot;qualified&quot; candidate until (1) the individual files a completed, notarized filing form that is accepted by the Department of Elections; and (2) the State Election Commissioner determines that an individual is qualified under 14 Del. C. § 209 (criminal background check and Delaware Child Protection Registry check) and under 14 Del. C. &sect; 1052 (citizenship and residency requirement), as required under 14 Del. C. &sect; 1075. A candidate's name will be added to the Department's online "filed school board candidates" list as "provisional" status candidate once the candidate has submitted the notarized filing form and has applied for a criminal background check and Delaware Child Protection Registry check.  After the State Election Commissioner has made determinations based on the results of these checks that the candidate is qualified to stand as a candidate per Delaware Code, the candidate’s status will be updated to "qualified".
+			</li>
+			<li>
+				Per the provisions of 14 Del. C. &sect; 1075(b), in the event that there is only 1 candidate for the election of a school board member, the Department of Elections conducting the election shall declare the candidate elected, shall not hold an election for that seat, and shall issue a certificate of election to that candidate.
+			</li>
+		</ul>
+		<p></p>
+
+		<p>
+			<span class="local-note-small">
+			<strong>Disclaimer:</strong><br>
+			The information on this list is entered by the agency that accepted the filing. 
+			The list is periodically updated.
+			Filings received on a day may not be reported until the next business day.
+			</span>
+		</p>
+	</div>
+</div><table class='table table-bordered table-striped' role='presentation'>
+<caption>Table of Contents</caption>
+<thead>
+<tr><th>New Castle</th><th>Kent</th><th>Sussex</th></tr>
+</thead>
+<tbody>
+<tr><td><ul><li><a href='#ap'>Appoquinimink</a></li><li><a href='#br'>Brandywine</a></li><li><a href='#cs'>Christina<a></li><li><a href='#co'>Colonial</a></li><li><a href='#rc'>Red Clay Consolidated</a></li></ul></td>
+<td><ul><li><a href='#cr'>Caesar Rodney</a></li><li><a href='#ca'>Capital</a></li><li><a href='#lf'>Lake Forest</a></li><li><a href='#mf'>Milford</a></li><li><a href='#sm'>Smyrna</a></li></ul></td>
+<td><ul><li><a href='#ch'>Cape Henlopen</a></li><li><a href='#dm'>Delmar</a></li><li><a href='#ir'>Indian River</a></li><li><a href='#lr'>Laurel</a></li><li><a href='#sf'>Seaford</a></li><li><a href='#wb'>Woodbridge</a></li></ul></td></tr>
+</tbody>
+</table>
+<h2>New Castle County</h2>
+<div id='ap'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Appoquinimink School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: At-Large (2 Seats)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div id='br'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Brandywine School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: Nominating District D (1 Seat), Nominating District F (1 Seat)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div id='cs'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Christina School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: Nominating District B (1 Seat), Nominating District F (1 Seat), Nominating District G (1 Seat)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td>Nominating District F</td><td>Four-Year Term<br>Term expires June 30, 2030</td><td><strong>Kane Dennison-Gomez</strong><br>
+<span>Website: <a href='https://www.KaneforChristina.com'>https://www.KaneforChristina.com</a></span><br><span>Email: <a href="/cdn-cgi/l/email-protection#bc9cdfd4ddd1ccd5d3d2dad3cedfd4ced5cfc8d5d2ddfcdbd1ddd5d092dfd3d1"><span class="__cf_email__" data-cfemail="c6a5aea7abb6afa9a8a0a9b4a5aeb4afb5b2afa8a786a1aba7afaae8a5a9ab">[email&#160;protected]</span></a></span><br></td><td>Qualified</td><td>7/16/2025</td></tr>
+</tbody>
+</table>
+<div id='co'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Colonial School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: Nominating District E (1 Seat), Nominating District F (1 Seat), Nominating District G* (1 Seat)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td>Nominating District G</td><td>Two-Year Term<br>Term expires June 30, 2028</td><td><strong>Tanya Kerns</strong><br>
+<span>Email: <a href="/cdn-cgi/l/email-protection#d3f3a7b2bdaab2b8b6a1bda0b5bca1b0bcbfbcbdbab2bf93b4beb2babffdb0bcbe"><span class="__cf_email__" data-cfemail="b1c5d0dfc8d0dad4c3dfc2d7dec3d2dedddedfd8d0ddf1d6dcd0d8dd9fd2dedc">[email&#160;protected]</span></a></span><br></td><td>Qualified</td><td>9/5/2025</td></tr>
+</tbody>
+</table>
+<div id='rc'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Red Clay School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: Nominating District C (1 Seat), Nominating District F (1 Seat)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<h2>Kent County</h2>
+<div id='cr'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Caesar Rodney School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: At-Large (2 Seats)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div id='ca'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Capital School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: At-Large (2 Seats)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div id='lf'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Lake Forest School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: At-Large (2 Seat)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div id='mf'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Milford School District **<br><span style='font-weight: normal; font-size: small;'>Up for Election: Nominating District C (1 Seat), Nominating District D (1 Seat), At large (1 seat)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div id='sm'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Smyrna School District **<br><span style='font-weight: normal; font-size: small;'>Up for Election: At-Large (2 Seats)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<h2>Sussex County</h2>
+<div id='ch'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Cape Henlopen School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: Nominating District D (1 Seat), At-Large (1 seat)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div id='dm'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Delmar School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: At-Large (2 Seats)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div id='ir'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Indian River School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: Nominating District 2 (1 Seats), Nominating District 3 (1 Seat)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div id='lr'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Laurel School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: At-Large (2 Seat)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div id='sf'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Seaford School District<br><span style='font-weight: normal; font-size: small;'>Up for Election: At-Large (2 Seats)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div id='wb'></div>
+<table class='table table-bordered table-condensed table-striped'><caption>Woodbridge School District **<br><span style='font-weight: normal; font-size: small;'>Up for Election: At-Large (2 seats)</span></caption>
+<thead><tr><th scope='col'>Nominating District</th><th scope='col'>Term</th><th scope='col'>Candidate</th><th scope='col'>Status</th><th scope='col'>Date Filed</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<a href='/candidates/candidatelist/sb_fcddt_2026.xlsx' aria-label='Download Candidates List'>Click here to download candidate list in <i class='far fa-file-excel'></i> Excel.</a><br><br>
+<p>* Fills balance of original unexpired term<br>** School District crosses boundaries.  Smyrna and Milford School Board Elections and Referrenda are both handled by <a href='/locations.shtml#kc'>Department of Elections &ndash; Kent County Office</a>. Woodbridge School Board Elections and Referenda are both handled by <a href='/locations.shtml#sc'>Department of Elections &ndash; Sussex County Office</a>.			<!-- Customized content end -->
+		  </div>
+        </div>
+      </div>
+    </main>
+<!-- END: MAIN BODY AREA --> 
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"b04ecceac7b946b0884fbbace8db9cfa","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+    <!-- BEGIN Portal Footer -->
+
+      <div data-ssi-type="virtual" data-ssi-path="/inc/CLF_agencyFooter.shtml">
+<div id="agencyFooter">
+  <div class="container">
+    <div class="row">
+	<br>
+      <div class="col-sm-3">
+        <a href="/">
+		    <!-- <img
+            src="/img/agency-logos/agency-logo-footer-white.png"
+            alt="The Department of Elections logo"
+            class="agencyFooter_logo" /> -->
+			<img
+            src="/img/agency-logos/agency-logo-300x100.png"
+            alt="Department of Elections Logo"
+            class="agencyFooter_logo"/> <!--img-responsive will break small screens unless image is very small or there are fewer footer items-->
+		</a>
+      </div>
+
+      <div class="col-sm-3">
+        <ul>          
+		  <li><a href="/public/boardofelections/index.shtml">Board of Elections</a></li>
+          <li><a href="/public/calendar/calendars.shtml">Election Calendars</a></li>
+          <li><a href="/public/forms/index.shtml">Forms and Publications</a></li>
+		  <li><a href="/maps/index.shtml">Maps</a></li>
+		  <li><a href="/public/faq/index.shtml">Frequently Asked Questions</a></li>
+          <li><a href="https://delaware.gov/responsible-disclosure/" target="_blank">Responsible Disclosure</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-3">
+        <ul>		  
+		  <li><a href="https://ivote.de.gov" target="_blank">Voter Portal</a></li>
+          <li><a href="https://cfrs.elections.delaware.gov" target="_blank">Campaign Finance Reporting</a></li>
+          <li><a href="https://gis.elections.delaware.gov" target="_blank">Geospatial Lookup</a></li>		  
+          <li><a href="/locations.shtml">Directory and Locations</a></li>
+          <li><a href="/public/foia/foia.shtml">FOIA Requests</a></li>
+        </ul>
+      </div>     
+	  <div class="col-sm-3 social-links">
+		<h2 class="pseudoH4">Connect:</h2>
+		<ul class="social-link-list float-left">
+			<li><span class="facebook"><a href="https://www.facebook.com/DoE.Delaware" target="_blank" aria-label="Facebook"><span class="wave_text">Facebook</span><i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i></a></span></li>
+			<li><span class="twitter"><a href="https://twitter.com/DE_Elections" target="_blank" aria-label="X Formerly Twitter"><span class="wave_text">Twitter</span><i class="fa fa-twitter-square fa-2x" aria-hidden="true"></i></a></span></li>
+			<li><span class="instagram"><a href="https://www.instagram.com/doe.delaware/" target="_blank" aria-label="Instagram"><span class="wave_text">Instagram</span><i class="fa fa-instagram fa-2x" aria-hidden="true"></i></a></span></li>
+			<li><span class="youtube"><a href="https://www.youtube.com/channel/UCYITHvWQRkGXNIZ3ctvH7VQ" target="_blank" aria-label="Youtube"><span class="wave_text">YouTube</span><i class="fa fa-youtube-square fa-2x" aria-hidden="true"></i></a></span></li>
+		</ul>
+	</div>
+		 
+
+	  
+	  
+    </div>
+  <div class="pull-right">
+    <button aria-label="Show more State of Delaware links" class="toggle-footer-btn">
+      +
+    </button>
+  </div>
+  </div>
+
+</div>
+
+</div> 
+<div id="footer">
+  <div class="container">
+    <h2 class="main_footer">Delaware's Government</h2>
+    <hr />
+    <div class="row">
+      <div class="col-sm-3">
+        <ul>
+          <li>
+            <a href="https://governor.delaware.gov">Delaware's Governor</a>
+          </li>
+          <li>
+            <a href="https://delaware.gov/topics/agencylist_alpha"
+              >State Agencies</a
+            >
+          </li>
+          <li>
+            <a href="https://delaware.gov/topics/yourgovernment"
+              >Elected Officials</a
+            >
+          </li>
+          <li><a href="https://legis.delaware.gov/">General Assembly</a></li>
+          <li><a href="https://courts.delaware.gov/">Delaware Courts</a></li>
+          <li>
+            <a
+              href="https://dhr.delaware.gov/talent-management/employee-resources.shtml"
+              >State Employees</a
+            >
+          </li>
+          <li>
+            <a href="https://delaware.gov/topics/municipalities"
+              >Cities &amp; Towns</a
+            >
+          </li>
+          <li>
+            <a href="http://delcode.delaware.gov/">Delaware State Code</a>
+          </li>
+          <li>
+            <a href="http://regulations.delaware.gov/">State Regulations</a>
+          </li>
+          <li>
+            <a href="https://firststeps.delaware.gov/">Business First Steps</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-3">
+        <ul>
+          <li>
+            <a href="https://phonedirectory.delaware.gov">Phone Directory</a>
+          </li>
+          <li>
+            <a href="https://delaware.gov/locationsdirectory/"
+              >Locations Directory</a
+            >
+          </li>
+          <li>
+            <a href="https://publicmeetings.delaware.gov/">Public Meetings</a>
+          </li>
+          <li>
+            <a href="https://elections.delaware.gov">Voting &amp; Elections</a>
+          </li>
+          <li>
+            <a href="https://delaware.gov/topics/transparency">Transparency</a>
+          </li>
+          <li>
+            <a href="https://www.choosehealthde.com/Health-Insurance"
+              >Delaware Marketplace</a
+            >
+          </li>
+          <li>
+            <a href="https://delaware.gov/topics/TaxCenter">Tax Center</a>
+          </li>
+          <li>
+            <a href="https://revenue.delaware.gov/pit_onlinefiling.shtml"
+              >Personal Income Tax</a
+            >
+          </li>
+          <li>
+            <a href="https://delaware.gov/help/privacy">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="https://delaware.gov/topics/weatherpage"
+              >Weather &amp; Travel</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-3">
+        <ul>
+          <li>
+            <a href="https://delaware.gov/help/degov-contact.shtml"
+              >Contact Us</a
+            >
+          </li>
+          <li><a href="https://corp.delaware.gov/">Corporations</a></li>
+          <li>
+            <a href="https://corp.delaware.gov/paytaxes.shtml">Franchise Tax</a>
+          </li>
+          <li>
+            <a href="https://grossreceiptstax.delaware.gov/grtpublic/"
+              >Gross Receipts Tax</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://dorweb.revenue.delaware.gov/EDIOnline/EDIOnline.dll"
+              >Withholding Tax</a
+            >
+          </li>
+          <li><a href="https://delaware.gov/topics/">Delaware Topics</a></li>
+          <li><a href="https://delaware.gov/help/">Help Center</a></li>
+          <li><a href="https://delaware.gov/topics/apps">Mobile Apps</a></li>
+          <li>
+            <a href="https://delaware.gov/topics/subscribeemail"
+              >E-mail / Text Alerts</a
+            >
+          </li>
+          <li>
+            <a href="https://delaware.gov/topics/socialmedia">Social Media</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-3">
+        <img
+          src="/img/portal_footer_seal.png"
+          alt="State Seal of Delaware"
+          class="hidden-xs img-responsive"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-sm-5 col-md-4 col-lg-4">
+        <div class="social center-block">
+          <div class="social_facebook">
+            <a href="https://www.facebook.com/delaware.gov" target="_blank"
+              ><span class="wave_text">Delaware.gov Facebook Page</span
+              ><i class="fab fa-facebook-square fa-3x"></i
+            ></a>
+          </div>
+          <div class="social_twitter">
+            <a href="https://twitter.com/delaware_gov/" target="_blank"
+              ><span class="wave_text">Delaware.gov Twitter Page</span
+              ><i class="fab fa-twitter-square fa-3x"></i
+            ></a>
+          </div>
+          <div class="social_flickr">
+            <a
+              href="https://www.flickr.com/groups/delaware_gov/"
+              target="_blank"
+              ><span class="wave_text">Delaware.gov Flickr Page</span
+              ><i class="fab fa-flickr fa-3x"></i
+            ></a>
+          </div>
+          <div class="social_youtube">
+            <a
+              href="https://www.youtube.com/user/DelawareGovernment"
+              target="_blank"
+              ><span class="wave_text">Delaware.gov YouTube Page</span
+              ><i class="fab fa-youtube-square fa-3x"></i
+            ></a>
+          </div>
+          <div class="social_rss">
+            <a href="https://www.instagram.com/delaware_gov/" target="_blank"
+              ><span class="wave_text">Delaware.gov Instagram Page</span
+              ><i class="fab fa-instagram fa-3x"></i
+            ></a>
+          </div>
+        </div>
+        <div class="clear"></div>
+        <br />
+      </div>
+      <div class="col-sm-3">
+        <div class="btn-group">
+          <a class="btn btn-default btn-lg decreaseFont" href="#"
+            ><span class="wave_text">Make Text Size Smaler</span
+            ><i class="fas fa-minus"></i
+          ></a>
+          <a class="btn btn-default btn-lg resetFont" href="#"
+            ><span class="wave_text">Reset Text Size</span
+            ><i class="fas fa-font"></i
+          ></a>
+          <a class="btn btn-default btn-lg increaseFont" href="#"
+            ><span class="wave_text">Make Text Size Bigger</span
+            ><i class="fas fa-plus"></i
+          ></a>
+        </div>
+        <br /><br />
+      </div>
+      <div class="col-sm-4 col-md-5 col-lg-5">
+        <img
+          src="/img/gic_portal_footer_logo.png"
+          alt="Built by the Government Information Center (GIC)"
+          class="footer_logo"
+        />
+        <p>
+          Built by the
+          <a href="https://gic.delaware.gov">Government Information Center</a
+          ><br />
+          &copy;MMXVIII <a href="https://delaware.gov">Delaware.gov</a>
+        </p>
+      </div>
+    </div>
+	<div class="pull-right">
+    <button class="toggle-footer-btn" aria-label="Hide State of Delaware links">
+      -
+    </button>
+  </div>
+  </div>
+</div>
+
+<!-- Retina Display JS Files -->
+<!--<script src="/js/linkchecker.js"></script>-->
+<script type="text/javascript" src="/js/utils.js"></script>
+<script type="text/javascript" src="/js/dialog.js"></script>
+<script src="/js/classie.js"></script>
+<script src="/js/uisearch.js"></script>
+<script>
+  new UISearch(document.getElementById("sb-search"));
+</script>
+<script>
+  new UISearch(document.getElementById("sb-search-main"));
+</script>
+
+
+    <!-- END Portal Footer -->
+</html>
