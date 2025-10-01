@@ -110,13 +110,14 @@ def run_maryland_update() -> UpdateStatistics:
                 if success:
                     stats.updated_candidates += 1
                     
-                    # Record match in database
-                    db.record_match(
-                        stage_id=0,  # Would need to get from staging table
-                        candidate_id=match_info['candidate_id'],
-                        confidence=match_info['confidence'],
-                        note=f"Auto-matched by {match_info['method']}"
-                    )
+                    # TODO: Record match in database once we have proper stage_ids
+                    # The stage_id needs to come from the normalized_candidates_stage table
+                    # db.record_match(
+                    #     stage_id=stage_id,  # Need to get actual stage_id from staging table
+                    #     candidate_id=match_info['candidate_id'],
+                    #     confidence=match_info['confidence'],
+                    #     note=f"Auto-matched by {match_info['method']}"
+                    # )
             except Exception as e:
                 logger.error(f"Error updating candidate: {e}")
                 stats.errors += 1
