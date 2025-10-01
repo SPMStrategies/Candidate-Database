@@ -240,10 +240,24 @@ class SupabaseClient:
                 f"election_year.eq.{election_year},election_year.is.null"
             ).execute()
         except AttributeError:
-            # Fallback: pass 'or' as an HTTP query param
-            result = select_q.execute(params={
-                'or': f"election_year.eq.{election_year},election_year.is.null"
-            })
+            # Fallback: query two sets (election_year == X) and (election_year IS NULL)
+            res_year = select_q.eq('election_year', election_year).execute()
+            res_null = select_q.is_('election_year', None).execute()
+            # Combine unique rows by id (if available) otherwise concatenate
+            rows = []
+            ids = set()
+            for r in (res_year.data or []):
+                rows.append(r)
+                ids.add(r.get('id'))
+            for r in (res_null.data or []):
+                if r.get('id') not in ids:
+                    rows.append(r)
+
+            # Create a fake result-like object for downstream code
+            class _R:
+                data = rows
+
+            result = _R()
         
         candidates = []
         for row in result.data:
