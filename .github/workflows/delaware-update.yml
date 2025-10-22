@@ -43,7 +43,7 @@ jobs:
     - name: Run Delaware update
       env:
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         DRY_RUN: false
       run: |
         cd Delaware

@@ -63,7 +63,7 @@ jobs:
         env:
           HUNTER_API_KEY: ${{ secrets.HUNTER_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           echo "Starting 60-day email revalidation..."
           echo "Date: $(date)"
@@ -74,7 +74,7 @@ jobs:
         if: always()
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           cd email_validator
           echo "" | python scripts/generate_report.py || true
@@ -94,7 +94,7 @@ jobs:
         uses: actions/github-script@v7
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         with:
           script: |
             const { execSync } = require('child_process');

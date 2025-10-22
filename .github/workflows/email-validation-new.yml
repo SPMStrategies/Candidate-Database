@@ -48,7 +48,7 @@ jobs:
         env:
           HUNTER_API_KEY: ${{ secrets.HUNTER_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           echo "Starting validation of new emails..."
           echo "Triggered by: ${{ github.event.workflow_run.workflow.name || 'Manual' }}"
@@ -59,7 +59,7 @@ jobs:
         if: always()
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           cd email_validator
           echo "" | python scripts/generate_report.py || true
@@ -77,7 +77,7 @@ jobs:
       - name: Check validation results
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           # Simple Python script to check results
           python -c "

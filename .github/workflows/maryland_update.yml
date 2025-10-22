@@ -56,7 +56,7 @@ jobs:
       - name: Run Maryland candidate update
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
           DEBUG: ${{ inputs.debug || 'false' }}
           PYTHONPATH: ${{ github.workspace }}
