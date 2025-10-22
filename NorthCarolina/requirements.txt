@@ -1,0 +1,21 @@
+# North Carolina candidate data ingestion dependencies
+
+# Core dependencies
+numpy>=1.24.0,<2.0.0
+pandas>=2.0.0,<2.2.0
+supabase==2.0.3
+pydantic==2.0.0
+python-dotenv==1.0.0
+
+# HTTP and networking
+requests==2.31.0
+tenacity==8.2.3
+
+# Data processing
+python-dateutil==2.8.2
+fuzzywuzzy==0.18.0
+python-Levenshtein==0.23.0
+
+# Optional for development/testing
+pytest==7.4.0
+black==23.7.0

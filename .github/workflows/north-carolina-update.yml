@@ -1,0 +1,108 @@
+name: Update North Carolina Candidates
+
+on:
+  schedule:
+    # Run daily at 4 AM ET (9 AM UTC during standard time, 8 AM UTC during daylight saving)
+    - cron: '0 9 * * *'
+
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no database changes)'
+        type: boolean
+        default: false
+      debug:
+        description: 'Enable debug logging'
+        type: boolean
+        default: false
+
+jobs:
+  update-nc-candidates:
+    name: Update North Carolina Candidates
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # Checkout repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: NorthCarolina/requirements.txt
+
+      # Install Python dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Force reinstall numpy and pandas to avoid binary incompatibility
+          pip install --force-reinstall --no-cache-dir numpy pandas
+          pip install -r NorthCarolina/requirements.txt
+
+      # Verify environment setup
+      - name: Verify environment
+        run: |
+          echo "Checking environment setup..."
+          echo "SUPABASE_URL is set: ${{ secrets.SUPABASE_URL != '' }}"
+          echo "SUPABASE_KEY is set: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY != '' }}"
+          echo "Python version: $(python --version)"
+          echo "Working directory: $(pwd)"
+
+      # Run the update script
+      - name: Run North Carolina candidate update
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          DEBUG: ${{ inputs.debug || 'false' }}
+          PYTHONPATH: ${{ github.workspace }}
+          NC_ELECTION_YEAR: 2024
+        run: |
+          echo "Starting North Carolina candidate update..."
+          echo "DRY_RUN: $DRY_RUN"
+          echo "DEBUG: $DEBUG"
+          echo "Election Year: $NC_ELECTION_YEAR"
+          cd NorthCarolina
+          python -m src.main
+
+      # Upload logs as artifacts (always, even on failure)
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nc-update-logs-${{ github.run_id }}
+          path: NorthCarolina/logs/
+          retention-days: 30
+
+      # Create issue on failure (only for scheduled runs)
+      - name: Create issue on failure
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `North Carolina Update Failed - ${new Date().toISOString().split('T')[0]}`,
+              body: `The nightly North Carolina candidate update failed.
+
+              **Workflow Run:** [View logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+              **Time:** ${new Date().toISOString()}
+              **Error:** Check the workflow logs for details.
+
+              Please investigate and resolve the issue.`,
+              labels: ['bug', 'automated', 'nc-update']
+            });
+            console.log(`Created issue #${issue.data.number}`);
+
+      # Post success notification
+      - name: Report success
+        if: success()
+        run: |
+          echo "✅ North Carolina candidate update completed successfully"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Time: $(date)"
