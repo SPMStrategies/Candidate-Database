@@ -60,7 +60,7 @@ jobs:
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
           DEBUG: ${{ inputs.debug || 'false' }}
           PYTHONPATH: ${{ github.workspace }}
-          NC_ELECTION_YEAR: 2024
+          NC_ELECTION_YEAR: 2025
         run: |
           echo "Starting North Carolina candidate update..."
           echo "DRY_RUN: $DRY_RUN"

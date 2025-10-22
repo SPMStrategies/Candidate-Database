@@ -33,7 +33,7 @@ if not SUPABASE_URL or not SUPABASE_KEY:
     raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
 
 # North Carolina BOE Configuration
-ELECTION_YEAR = int(os.getenv("NC_ELECTION_YEAR", "2024"))
+ELECTION_YEAR = int(os.getenv("NC_ELECTION_YEAR", "2025"))
 NC_CSV_URL = os.getenv(
     "NC_CSV_URL",
     f"https://s3.amazonaws.com/dl.ncsbe.gov/Elections/{ELECTION_YEAR}/Candidate%20Filing/Candidate_Listing_{ELECTION_YEAR}.csv"
