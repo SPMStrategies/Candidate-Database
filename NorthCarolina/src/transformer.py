@@ -253,7 +253,85 @@ class NorthCarolinaTransformer:
 
         logger.info(f"Successfully transformed {len(transformed)}/{len(df)} candidates")
 
-        return transformed
+        # Consolidate candidates that appear in multiple counties
+        consolidated = self._consolidate_candidates(transformed)
+        logger.info(f"Consolidated to {len(consolidated)} unique candidates")
+
+        return consolidated
+
+    def _consolidate_candidates(self, candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Consolidate candidates that appear in multiple counties into single records.
+
+        NC's CSV has one row per candidate per county. This method groups candidates
+        by (name, office, party, election_date) and merges their jurisdictions into arrays.
+
+        Args:
+            candidates: List of transformed candidate dictionaries
+
+        Returns:
+            List of consolidated candidate dictionaries with jurisdiction arrays
+        """
+        from collections import defaultdict
+
+        # Group candidates by deduplication key
+        groups = defaultdict(list)
+        for candidate_data in candidates:
+            candidate = candidate_data['candidate']
+
+            # Create deduplication key (without jurisdiction)
+            key = (
+                candidate['full_name'],
+                candidate['office_name'],
+                candidate.get('party', ''),
+                candidate_data['filing_info'].get('election_date', '')
+            )
+            groups[key].append(candidate_data)
+
+        consolidated = []
+        for key, group in groups.items():
+            # Take the first candidate as the base
+            base_candidate = group[0].copy()
+
+            # Collect all unique jurisdictions
+            jurisdictions = set()
+            for candidate_data in group:
+                jurisdiction = candidate_data['candidate'].get('jurisdiction')
+                if jurisdiction:
+                    jurisdictions.add(jurisdiction)
+
+            # Determine final jurisdiction value
+            jurisdiction_list = sorted(jurisdictions)
+            if len(jurisdiction_list) >= 50:
+                # NC has 100 counties - if candidate appears in 50+, it's statewide
+                base_candidate['candidate']['jurisdiction'] = ['Statewide']
+            elif len(jurisdiction_list) > 0:
+                # Store as array of counties
+                base_candidate['candidate']['jurisdiction'] = jurisdiction_list
+            else:
+                base_candidate['candidate']['jurisdiction'] = None
+
+            # Merge contact info - take first non-null value for each field
+            merged_contact = {}
+            for field in ['phone_primary', 'phone_secondary', 'phone_business',
+                         'mailing_address_street', 'mailing_address_city',
+                         'mailing_address_state', 'mailing_address_zip']:
+                for candidate_data in group:
+                    value = candidate_data.get('contact_info', {}).get(field)
+                    if value:
+                        merged_contact[field] = value
+                        break  # Take first non-null
+                if field not in merged_contact:
+                    merged_contact[field] = None
+
+            base_candidate['contact_info'] = merged_contact
+
+            # Keep filing info from first entry
+            # (all entries in group should have same filing info anyway)
+
+            consolidated.append(base_candidate)
+
+        return consolidated
 
 
 def transform_nc_data(df: pd.DataFrame) -> List[Dict[str, Any]]:
