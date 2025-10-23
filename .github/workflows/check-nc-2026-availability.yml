@@ -1,0 +1,50 @@
+name: Check NC 2026 Data Availability
+
+on:
+  schedule:
+    # Run every 2 days at 10 AM UTC (5 AM ET)
+    - cron: '0 10 */2 * *'
+
+  workflow_dispatch:
+    # Allow manual triggering for testing
+
+jobs:
+  check-availability:
+    name: Check NC 2026 Data
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r data_availability_checker/requirements.txt
+
+      - name: Check NC 2026 data availability
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_PHONE_FROM: ${{ secrets.TWILIO_PHONE_FROM }}
+          TWILIO_PHONE_TO: ${{ secrets.TWILIO_PHONE_TO }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          cd data_availability_checker
+          python check_nc_2026.py
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: checker-logs-${{ github.run_id }}
+          path: |
+            data_availability_checker/*.log
+          retention-days: 7
